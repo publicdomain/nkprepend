@@ -205,7 +205,10 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnFileListViewMouseMove(object sender, MouseEventArgs e)
         {
-            // TODO Add code
+            if (listViewItem != null)
+            {
+                Cursor = Cursors.Hand;
+            }
         }
 
         /// <summary>
