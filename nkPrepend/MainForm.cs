@@ -195,7 +195,7 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnFileListViewMouseDown(object sender, MouseEventArgs e)
         {
-            // TODO Add code
+            listViewItem = fileListView.GetItemAt(e.X, e.Y);
         }
 
         /// <summary>
