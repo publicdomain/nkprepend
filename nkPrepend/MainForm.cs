@@ -12,6 +12,7 @@ namespace nkPrepend
     using System.Data;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Windows.Forms;
 
@@ -93,26 +94,6 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the file list view drag enter.
-        /// </summary>
-        /// <param name="sender">Sender object.</param>
-        /// <param name="e">Event arguments.</param>
-        private void OnFileListViewDragEnter(object sender, DragEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Ons the file list view item drag.
-        /// </summary>
-        /// <param name="sender">Sender object.</param>
-        /// <param name="e">Event arguments.</param>
-        private void OnFileListViewItemDrag(object sender, ItemDragEventArgs e)
-        {
-
-        }
-
-        /// <summary>
         /// Ons the browse button click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
@@ -135,10 +116,11 @@ namespace nkPrepend
                 foreach (string file in Directory.GetFiles(this.folderBrowserDialog.SelectedPath, "*", SearchOption.TopDirectoryOnly))
                 {
                     // Set item to file name 
-                    ListViewItem item = new ListViewItem(Path.GetFileName(file));
-
-                    // Store full path as tag
-                    item.Tag = file;
+                    ListViewItem item = new ListViewItem(Path.GetFileName(file))
+                    {
+                        // Store full path as tag
+                        Tag = file
+                    };
 
                     // Add item to list 
                     this.fileListView.Items.Add(item);
@@ -247,6 +229,29 @@ namespace nkPrepend
                     Cursor = Cursors.Default;
                 }
             }
+        }
+
+        /// <summary>
+        /// Ons the delete tool strip menu item click.
+        /// </summary>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
+        private void OnDeleteToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            // Prevent drawing 
+            this.fileListView.BeginUpdate();
+
+            // Remove selected items
+            while (this.fileListView.SelectedIndices.Count > 0)
+            {
+                this.fileListView.Items.RemoveAt(this.fileListView.SelectedIndices[0]);
+            }
+
+            // Update count
+            this.fileCountToolStripStatusLabel.Text = this.fileListView.Items.Count.ToString();
+
+            // Resume drawing
+            this.fileListView.EndUpdate();
         }
 
         /// <summary>
