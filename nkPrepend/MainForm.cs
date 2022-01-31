@@ -350,7 +350,55 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnMoveButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Check there's something to work with
+            if (this.fileListView.Items.Count == 0)
+            {
+                // Halt flow
+                return;
+            }
+
+            // Set description
+            this.folderBrowserDialog.Description = "Set target move directory";
+
+            // Reset selected path
+            this.folderBrowserDialog.SelectedPath = string.Empty;
+
+            // Show folder browser dialog
+            if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK && this.folderBrowserDialog.SelectedPath.Length > 0)
+            {
+                // Iterate items 
+                for (int i = 0; i < this.fileListView.Items.Count; i++)
+                {
+                    // Set source and destination paths
+                    var sourcePath = this.fileListView.Items[i].Tag.ToString();
+                    var sourceFileName = Path.GetFileName(sourcePath);
+                    var prefix = $"{(i + 1).ToString().PadLeft(this.paddingZeros, '0')}";
+                    var destination = Path.Combine(this.folderBrowserDialog.SelectedPath, $"{prefix} {sourceFileName}");
+
+                    // Move with new name
+                    try
+                    {
+                        File.Move(sourcePath, destination);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Inform about error
+                        MessageBox.Show($"Source:{Environment.NewLine}{sourcePath}{Environment.NewLine}Destination:{Environment.NewLine}{destination}{Environment.NewLine}{Environment.NewLine}Message:{Environment.NewLine}{ex.Message}", "File move error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                // Save file count
+                int fileCount = this.fileListView.Items.Count;
+
+                // Clear list items
+                this.fileListView.Items.Clear();
+
+                // Update item count
+                this.fileCountToolStripStatusLabel.Text = this.fileListView.Items.Count.ToString();
+
+                // Advise user
+                MessageBox.Show($"Moved {fileCount} files.", "Move", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
