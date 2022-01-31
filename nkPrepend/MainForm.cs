@@ -16,6 +16,7 @@ namespace nkPrepend
     using System.Text;
     using Microsoft.VisualBasic;
     using System.Windows.Forms;
+    using System.Diagnostics;
 
     /// <summary>
     /// Description of MainForm.
@@ -108,7 +109,8 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnSourceCodeGithubcomToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Open GitHub repository
+            Process.Start("https://github.com/publicdomain/nkprepend");
         }
 
         /// <summary>
