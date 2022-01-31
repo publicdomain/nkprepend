@@ -14,6 +14,7 @@ namespace nkPrepend
     using System.IO;
     using System.Linq;
     using System.Text;
+    using Microsoft.VisualBasic;
     using System.Windows.Forms;
 
     /// <summary>
@@ -23,6 +24,11 @@ namespace nkPrepend
     {
         // The list view item
         private ListViewItem listViewItem = null;
+
+        /// <summary>
+        /// The padding zeros.
+        /// </summary>
+        private int paddingZeros = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:nkPrepend.MainForm"/> class.
@@ -50,7 +56,27 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnOptionsToolStripMenuItemDropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            // TODO Add code
+            // Set clicked item
+            var clickedItem = (ToolStripMenuItem)e.ClickedItem;
+
+            // Toggle checked
+            clickedItem.Checked = !clickedItem.Checked;
+
+            // Set zeros
+            if (clickedItem == this.padWithZerosToolStripMenuItem && clickedItem.Checked)
+            {
+                // TODO Prevent z-order [Can be made conditional]
+                this.TopMost = false;
+
+                // Set padding zeros
+                if (int.TryParse(Interaction.InputBox("Enter number of padding zeros:", "Set zeros", this.paddingZeros.ToString()), out int zeros) && zeros > 1)
+                {
+                    this.paddingZeros = zeros;
+                }
+            }
+
+            // Set topmost
+            this.TopMost = this.alwaysOnTopToolStripMenuItem.Checked;
         }
 
         /// <summary>
