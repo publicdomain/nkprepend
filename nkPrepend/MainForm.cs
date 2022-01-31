@@ -59,24 +59,26 @@ namespace nkPrepend
             // Set clicked item
             var clickedItem = (ToolStripMenuItem)e.ClickedItem;
 
-            // Toggle checked
-            clickedItem.Checked = !clickedItem.Checked;
-
             // Set zeros
-            if (clickedItem == this.padWithZerosToolStripMenuItem && clickedItem.Checked)
+            if (clickedItem == this.setPaddingZerosToolStripMenuItem)
             {
                 // TODO Prevent z-order [Can be made conditional]
                 this.TopMost = false;
 
                 // Set padding zeros
-                if (int.TryParse(Interaction.InputBox("Enter number of padding zeros:", "Set zeros", this.paddingZeros.ToString()), out int zeros) && zeros > 1)
+                if (int.TryParse(Interaction.InputBox("Enter number of padding zeros:", "Set zeros", this.paddingZeros.ToString()), out int zeros) && zeros > 0)
                 {
                     this.paddingZeros = zeros;
                 }
             }
+            else
+            {
+                // Toggle checked
+                clickedItem.Checked = !clickedItem.Checked;
 
-            // Set topmost
-            this.TopMost = this.alwaysOnTopToolStripMenuItem.Checked;
+                // Set topmost
+                this.TopMost = this.alwaysOnTopToolStripMenuItem.Checked;
+            }
         }
 
         /// <summary>
@@ -173,7 +175,38 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnRenameButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Iterate items 
+            for (int i = 0; i < this.fileListView.Items.Count; i++)
+            {
+                // Set source and destination paths
+                var sourcePath = this.fileListView.Items[i].Tag.ToString();
+                var sourceFileName = Path.GetFileName(sourcePath);
+                var prefix = $"{(i + 1).ToString().PadLeft(this.paddingZeros, '0')}";
+                var destination = Path.Combine(Path.GetDirectoryName(sourcePath), $"{prefix} {sourceFileName}");
+
+                // "Move" to new name
+                try
+                {
+                    File.Move(sourcePath, destination);
+                }
+                catch (Exception ex)
+                {
+                    // Inform about error
+                    MessageBox.Show($"Source:{Environment.NewLine}{sourcePath}{Environment.NewLine}Destination:{Environment.NewLine}{destination}{Environment.NewLine}{Environment.NewLine}Message:{Environment.NewLine}{ex.Message}", "File rename error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            // Save file count
+            int fileCount = this.fileListView.Items.Count;
+
+            // Clear list items
+            this.fileListView.Items.Clear();
+
+            // Update item count
+            this.fileCountToolStripStatusLabel.Text = this.fileListView.Items.Count.ToString();
+
+            // Advise user
+            MessageBox.Show($"Renamed {fileCount} files.", "Rename", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>

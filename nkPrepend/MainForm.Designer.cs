@@ -30,11 +30,11 @@ namespace nkPrepend
         private System.Windows.Forms.Button renameButton;
         private System.Windows.Forms.Button copyButton;
         private System.Windows.Forms.Button moveButton;
-        private System.Windows.Forms.ToolStripMenuItem padWithZerosToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.ColumnHeader fileColumnHeader;
         private System.Windows.Forms.ContextMenuStrip fileListViewContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setPaddingZerosToolStripMenuItem;
 
         /// <summary>
         /// Disposes resources used by the form.
@@ -68,7 +68,6 @@ namespace nkPrepend
         	this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         	this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         	this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-        	this.padWithZerosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         	this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         	this.freeReleasesPublicDomainisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         	this.originalThreadDonationCodercomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,9 +85,10 @@ namespace nkPrepend
         	this.moveButton = new System.Windows.Forms.Button();
         	this.fileListView = new System.Windows.Forms.ListView();
         	this.fileColumnHeader = new System.Windows.Forms.ColumnHeader();
-        	this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         	this.fileListViewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
         	this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        	this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+        	this.setPaddingZerosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         	this.mainMenuStrip.SuspendLayout();
         	this.mainStatusStrip.SuspendLayout();
         	this.mainTableLayoutPanel.SuspendLayout();
@@ -143,7 +143,7 @@ namespace nkPrepend
         	// 
         	this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.alwaysOnTopToolStripMenuItem,
-			this.padWithZerosToolStripMenuItem});
+			this.setPaddingZerosToolStripMenuItem});
         	this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
         	this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
         	this.optionsToolStripMenuItem.Text = "&Options";
@@ -152,14 +152,8 @@ namespace nkPrepend
         	// alwaysOnTopToolStripMenuItem
         	// 
         	this.alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
-        	this.alwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+        	this.alwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
         	this.alwaysOnTopToolStripMenuItem.Text = "&Always on top";
-        	// 
-        	// padWithZerosToolStripMenuItem
-        	// 
-        	this.padWithZerosToolStripMenuItem.Name = "padWithZerosToolStripMenuItem";
-        	this.padWithZerosToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-        	this.padWithZerosToolStripMenuItem.Text = "&Pad with zeros";
         	// 
         	// helpToolStripMenuItem
         	// 
@@ -344,14 +338,20 @@ namespace nkPrepend
         	this.fileListViewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.deleteToolStripMenuItem});
         	this.fileListViewContextMenuStrip.Name = "fileListViewContextMenuStrip";
-        	this.fileListViewContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+        	this.fileListViewContextMenuStrip.Size = new System.Drawing.Size(108, 26);
         	// 
         	// deleteToolStripMenuItem
         	// 
         	this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-        	this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+        	this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
         	this.deleteToolStripMenuItem.Text = "&Delete";
         	this.deleteToolStripMenuItem.Click += new System.EventHandler(this.OnDeleteToolStripMenuItemClick);
+        	// 
+        	// setPaddingZerosToolStripMenuItem
+        	// 
+        	this.setPaddingZerosToolStripMenuItem.Name = "setPaddingZerosToolStripMenuItem";
+        	this.setPaddingZerosToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+        	this.setPaddingZerosToolStripMenuItem.Text = "&Set padding zeros";
         	// 
         	// MainForm
         	// 
