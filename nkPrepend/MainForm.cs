@@ -47,7 +47,16 @@ namespace nkPrepend
         /// <param name="e">Event arguments.</param>
         private void OnNewToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Clear list view items
+            this.fileListView.Items.Clear();
+
+            // Update count
+            this.fileCountToolStripStatusLabel.Text = "0";
+
+            // Disable buttons
+            this.renameButton.Enabled = false;
+            this.copyButton.Enabled = false;
+            this.moveButton.Enabled = false;
         }
 
         /// <summary>
