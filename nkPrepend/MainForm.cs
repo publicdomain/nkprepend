@@ -55,7 +55,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the new tool strip menu item click.
+        /// Handles the new tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -74,7 +74,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the options tool strip menu item drop down item clicked.
+        /// Handles the options tool strip menu item drop down item clicked.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -106,7 +106,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the free releases public domainis tool strip menu item click.
+        /// Handles the free releases public domainis tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -117,7 +117,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the original thread donation codercom tool strip menu item click.
+        /// Handles the original thread donation codercom tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -128,7 +128,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the source code githubcom tool strip menu item click.
+        /// Handles the source code githubcom tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -139,11 +139,11 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the on about tool strip menu item click.
+        /// Handles the about tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
-        private void OnOnAboutToolStripMenuItemClick(object sender, EventArgs e)
+        private void OnAboutToolStripMenuItemClick(object sender, EventArgs e)
         {
             // Set license text
             var licenseText = $"CC0 1.0 Universal (CC0 1.0) - Public Domain Dedication{Environment.NewLine}" +
@@ -194,7 +194,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the browse button click.
+        /// Handles the browse button click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -241,12 +241,19 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the rename button click.
+        /// Handles the rename button click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
         private void OnRenameButtonClick(object sender, EventArgs e)
         {
+            // Check there's something to work with
+            if (this.fileListView.Items.Count == 0)
+            {
+                // Halt flow
+                return;
+            }
+
             // Iterate items 
             for (int i = 0; i < this.fileListView.Items.Count; i++)
             {
@@ -282,17 +289,62 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the copy button click.
+        /// Handles the copy button click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
         private void OnCopyButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Check there's something to work with
+            if (this.fileListView.Items.Count == 0)
+            {
+                // Halt flow
+                return;
+            }
+
+            // Set description
+            this.folderBrowserDialog.Description = "Set target copy directory";
+
+            // Reset selected path
+            this.folderBrowserDialog.SelectedPath = string.Empty;
+
+            // Show folder browser dialog
+            if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK && this.folderBrowserDialog.SelectedPath.Length > 0)
+            {
+                // Iterate items 
+                for (int i = 0; i < this.fileListView.Items.Count; i++)
+                {
+                    // Set source and destination paths
+                    var sourcePath = this.fileListView.Items[i].Tag.ToString();
+                    var sourceFileName = Path.GetFileName(sourcePath);
+                    var prefix = $"{(i + 1).ToString().PadLeft(this.paddingZeros, '0')}";
+                    var destination = Path.Combine(this.folderBrowserDialog.SelectedPath, $"{prefix} {sourceFileName}");
+
+                    // Copy with new name
+                    try
+                    {
+                        File.Copy(sourcePath, destination);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Inform about error
+                        MessageBox.Show($"Source:{Environment.NewLine}{sourcePath}{Environment.NewLine}Destination:{Environment.NewLine}{destination}{Environment.NewLine}{Environment.NewLine}Message:{Environment.NewLine}{ex.Message}", "File copy error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                // Save file count
+                int fileCount = this.fileListView.Items.Count;
+
+                // Update item count
+                this.fileCountToolStripStatusLabel.Text = this.fileListView.Items.Count.ToString();
+
+                // Advise user
+                MessageBox.Show($"Copied {fileCount} files.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
-        /// Ons the move button click.
+        /// Handles the move button click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -363,7 +415,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the delete tool strip menu item click.
+        /// Handles the delete tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
@@ -386,7 +438,7 @@ namespace nkPrepend
         }
 
         /// <summary>
-        /// Ons the exit tool strip menu item click.
+        /// Handles the exit tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
