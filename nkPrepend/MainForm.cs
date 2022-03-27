@@ -1,4 +1,4 @@
-﻿// <copyright file="MainForm.cs" company="PublicDomainWeekly.com">
+﻿// <copyright file="MainForm.cs" company="PublicDomain.is">
 //     CC0 1.0 Universal (CC0 1.0) - Public Domain Dedication
 //     https://creativecommons.org/publicdomain/zero/1.0/legalcode
 // </copyright>
@@ -420,7 +420,48 @@ namespace nkPrepend
         {
             if (listViewItem != null)
             {
+                // Change cursor
                 Cursor = Cursors.Hand;
+
+                try
+                {
+                    ListViewItem destinationListViewItem = fileListView.GetItemAt(0, Math.Min(e.Y, fileListView.Items[fileListView.Items.Count - 1].GetBounds(ItemBoundsPortion.Entire).Bottom - 1));
+
+                    if (destinationListViewItem != null)
+                    {
+                        Rectangle rectangle = destinationListViewItem.GetBounds(ItemBoundsPortion.Entire);
+
+                        bool insertBefore = (e.Y < rectangle.Top + (rectangle.Height / 2));
+
+                        // Check if must scroll up
+                        if (destinationListViewItem.Index == fileListView.TopItem.Index && insertBefore && fileListView.TopItem.Index > 0)
+                        {
+                            fileListView.EnsureVisible(fileListView.TopItem.Index - 1);
+                        }
+                        else // Check if must scroll down
+                        {
+                            ListViewItem bottomItem = fileListView.TopItem;
+
+                            for (int i = fileListView.TopItem.Index + 1; i < fileListView.Items.Count; i++)
+                            {
+                                if (fileListView.ClientRectangle.Contains(fileListView.Items[i].Bounds))
+                                {
+                                    bottomItem = fileListView.Items[i];
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (destinationListViewItem.Index == bottomItem.Index && !insertBefore && bottomItem.Index < fileListView.Items.Count - 1)
+                            {
+                                fileListView.EnsureVisible(bottomItem.Index + 1);
+                            }
+                        }
+                    }
+                }
+                catch {; }
             }
         }
 
@@ -447,7 +488,7 @@ namespace nkPrepend
                         {
                             fileListView.Items.Remove(listViewItem);
 
-                            fileListView.Items.Insert(destinationListViewItem.Index + (insertBefore ? 1 : 0), listViewItem);
+                            fileListView.Items.Insert(destinationListViewItem.Index + (insertBefore ? 0 : 1), listViewItem);
                         }
 
                         fileListView.Invalidate();
